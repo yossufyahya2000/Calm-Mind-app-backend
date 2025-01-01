@@ -10,12 +10,14 @@ from app.chat.message import conversationCreate
 load_dotenv()
 #
 # Set up logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+'''logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)'''
 
 app = FastAPI()
 
-
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
 
 @app.post("/chat")
 async def chat_endpoint(message: conversationCreate) -> Dict:
