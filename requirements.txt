@@ -1,5 +1,5 @@
 fastapi==0.115.6
-uvicorn==0.8.3
+uvicorn==0.34.0
 google-generativeai==0.8.3
 mangum
 supabase==2.11.0
