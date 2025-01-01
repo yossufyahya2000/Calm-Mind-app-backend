@@ -9,6 +9,6 @@ def geminiClient():
     genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
     
     # Create the model
-    model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel('gemini-2.0-flash-exp')
     
     return model
