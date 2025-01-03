@@ -57,7 +57,7 @@ class ChatService:
             ])
         
             # Combine all context
-            full_prompt = f"{system_prompt}\n\nConversation history:\n{conversation_context}\n\nUser: {user_message}"
+            full_prompt = f"\nConversation history:\n{conversation_context}\n\nUser: {user_message}"
         
             # Generate response with full context
             response = self.model.generate_content(full_prompt)
