@@ -25,13 +25,13 @@ async def chat_endpoint(message: conversationCreate):
         conversation_id = response["conversation_id"]
         
         # Send conversation_id first
-        yield f"data: {json.dumps({'conversation_id': str(conversation_id)})}\n\n"
+        #yield f"data: {json.dumps({'conversation_id': str(conversation_id)})}\n\n"
         
         streamResponse = response["stream"]
         # Handle streaming response properly
         for chunk in streamResponse:
             if chunk.text:
-                yield f"data: {json.dumps({'text': chunk.text})}\n\n"
+                yield f"data: {json.dumps({'text': chunk.text,'conversation_id': str(conversation_id)})}\n\n"
 
     return StreamingResponse(generate(), media_type="text/event-stream")
 
