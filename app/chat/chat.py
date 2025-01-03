@@ -38,36 +38,36 @@ class ChatService:
             logger.error(f"Failed to save message: {e}")
             raise HTTPException(status_code=500, detail="Failed to save message")
 
-    async def generate_ai_response(self, conversation_id: UUID, user_message: str) -> str:
-        """Generate AI response using Gemini model with conversation context."""
+    async def generate_ai_response(self, conversation_id: UUID, user_message: str):
         try:
             # Get conversation history
             history = await self.get_conversation_history(conversation_id)
         
-            # Build context prompt
             system_prompt = """You are a supportive and empathetic mental health assistant. 
             Your role is to provide emotional support, active listening, and helpful guidance 
             while maintaining professional boundaries. Never provide medical advice or diagnosis. 
             Focus on empathy, coping strategies, and encouraging professional help when needed."""
         
-            # Format conversation history into context
             conversation_context = "\n".join([
                 f"{'User' if msg.role == 'user' else 'Assistant'}: {msg.content}"
                 for msg in history
             ])
         
-            # Combine all context
-            full_prompt = f"\nConversation history:\n{conversation_context}\n\nUser: {user_message}"
-        
-            # Generate response with full context
-            response = self.model.generate_content(full_prompt)
-            return response.text
+            full_prompt = f"\nConversation history:\n{conversation_context}\n\n User: {user_message}"
+            response = self.model.generate_content(full_prompt, stream=True)
+            # Return the streaming response directly
+            return response
         
         except Exception as e:
             logger.error(f"Failed to generate AI response: {e}")
             raise HTTPException(status_code=500, detail="Failed to generate AI response")
-    async def process_chat(self, conversation : conversationCreate) -> dict:
-        """Process a chat message and return the AI response."""
+
+            
+            
+        
+        
+    async def process_chat(self, conversation: conversationCreate):
+        """Process a chat message and return the streaming AI response."""
         try:
             # Use existing conversation or create new one
             conversation_id = conversation.conversation_id
@@ -81,15 +81,14 @@ class ChatService:
                 content=conversation.content
             ))
 
-            # Generate and save AI response
-            ai_response = await self.generate_ai_response(conversation_id, conversation.content)
-            await self.save_message(MessageCreate(
-                conversation_id=conversation_id,
-                role="assistant",
-                content=ai_response
-            ))
-
-            return {"response": ai_response, "conversation_id": conversation_id}
+            # Generate streaming response
+            response_stream = await self.generate_ai_response(conversation_id, conversation.content)
+            
+            # Return both the stream and conversation_id
+            return {
+                    "stream": response_stream,
+                    "conversation_id": conversation_id
+                }
 
         except Exception as e:
             logger.error(f"Chat processing error: {e}")
