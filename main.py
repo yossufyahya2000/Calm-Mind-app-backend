@@ -6,7 +6,7 @@ from typing import Dict
 from dotenv import load_dotenv
 import logging
 from app.chat.chat import ChatService
-from app.chat.message import conversationCreate
+from app.chat.message import conversationCreate,MessageCreate
 
 
 load_dotenv()
@@ -26,12 +26,27 @@ async def chat_endpoint(message: conversationCreate):
         
         # Send conversation_id first
         #yield f"data: {json.dumps({'conversation_id': str(conversation_id)})}\n\n"
-        
+        full_response = ""
         streamResponse = response["stream"]
         # Handle streaming response properly
         for chunk in streamResponse:
             if chunk.text:
+                full_response += chunk.text
                 yield f"data: {json.dumps({'text': chunk.text,'conversation_id': str(conversation_id)})}\n\n"
+                
+        # Save user message
+            await chat_service.save_message(MessageCreate(
+                conversation_id=conversation_id,
+                role="user",
+                content=message.content
+            ))
+          
+        # Save ass message  
+        await chat_service.save_message(MessageCreate(
+            conversation_id=conversation_id,
+            role="assistant",
+            content=full_response
+        ))
 
     return StreamingResponse(generate(), media_type="text/event-stream")
 

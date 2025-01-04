@@ -74,13 +74,6 @@ class ChatService:
             if not conversation_id:
                 conversation_id = await self.create_conversation(conversation.profile_id, conversation.content)
 
-            # Save user message
-            await self.save_message(MessageCreate(
-                conversation_id=conversation_id,
-                role="user",
-                content=conversation.content
-            ))
-
             # Generate streaming response
             response_stream = await self.generate_ai_response(conversation_id, conversation.content)
             
