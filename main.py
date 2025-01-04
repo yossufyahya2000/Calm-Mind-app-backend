@@ -35,11 +35,11 @@ async def chat_endpoint(message: conversationCreate):
                 yield f"data: {json.dumps({'text': chunk.text,'conversation_id': str(conversation_id)})}\n\n"
                 
         # Save user message
-            await chat_service.save_message(MessageCreate(
-                conversation_id=conversation_id,
-                role="user",
-                content=message.content
-            ))
+        await chat_service.save_message(MessageCreate(
+            conversation_id=conversation_id,
+            role="user",
+            content=message.content
+        ))
           
         # Save ass message  
         await chat_service.save_message(MessageCreate(
@@ -53,3 +53,5 @@ async def chat_endpoint(message: conversationCreate):
 #
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    
+    
