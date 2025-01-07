@@ -75,7 +75,7 @@ async def create_payment_intent(payment_data: PaymentIntentRequest):
 from pydantic import BaseModel
     
 class CreateCheckoutSessionRequest(BaseModel):
-    amount : 50
+    amount : int
     success_url: str = "https://www.google.com/"
     cancel_url: str = "https://www.google.com/"
 
