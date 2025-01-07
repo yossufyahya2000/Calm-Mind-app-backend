@@ -70,10 +70,35 @@ async def create_payment_intent(payment_data: PaymentIntentRequest):
         return {"client_secret": intent.client_secret}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+    
+
+from pydantic import BaseModel
+    
+class CreateCheckoutSessionRequest(BaseModel):
+    amount : 50
+    success_url: str 
+    cancel_url: str
+
+@app.post("/create-checkout-session")
+async def create_checkout_session(session_data: CreateCheckoutSessionRequest):
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            line_items=[{
+                'price': session_data.amount,
+                'quantity': 1,
+            }],
+            mode='payment',
+            success_url="https://www.google.com/",
+            cancel_url="https://www.google.com/",
+        )
+        return {"url": checkout_session.url}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    
     
     
