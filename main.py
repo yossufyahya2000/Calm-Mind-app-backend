@@ -52,7 +52,7 @@ async def chat_endpoint(message: conversationCreate):
     return StreamingResponse(generate(), media_type="text/event-stream")
 
 # Stripe configuration
-stripe.api_key = "your-stripe-secret-key"
+stripe.api_key = "sk_test_51PTVnz04D1fiiyEWi8oObpVPpEflWz5sOlUreTqQJkfcuNc4j3tcxGVjOYOzt8cWoHrUtvdGOGifZt7JYhpYNRHZ00VSXaa4nB"
 
 @app.post("/create-payment-intent")
 async def create_payment_intent(amount: int, currency: str = "usd"):
