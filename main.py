@@ -1,10 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import StreamingResponse
 import uvicorn
 import json
 from typing import Dict
 from dotenv import load_dotenv
 import logging
+import stripe
 from app.chat.chat import ChatService
 from app.chat.message import conversationCreate,MessageCreate
 
@@ -50,7 +51,22 @@ async def chat_endpoint(message: conversationCreate):
 
     return StreamingResponse(generate(), media_type="text/event-stream")
 
-#
+# Stripe configuration
+stripe.api_key = "your-stripe-secret-key"
+
+@app.post("/create-payment-intent")
+async def create_payment_intent(amount: int, currency: str = "usd"):
+    try:
+        intent = stripe.PaymentIntent.create(
+            amount=amount,
+            currency=currency,
+        )
+        return {"client_secret": intent.client_secret}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
     

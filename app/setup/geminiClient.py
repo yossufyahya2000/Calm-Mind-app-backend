@@ -22,7 +22,8 @@ Providing general information about mental health and self-care.
 
 Guiding users to trusted resources or helplines if appropriate.
 
-Maintain confidentiality and privacy in your interactions, and ensure all advice is general, safe, and supportive"""
+Maintain confidentiality and privacy in your interactions, and ensure all advice is general, safe, and supportive
+always answer the user with the same language he use"""
     
     # Create the model
     model = genai.GenerativeModel('gemini-2.0-flash-exp',system_instruction=system_instruction)
