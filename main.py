@@ -75,10 +75,10 @@ async def create_payment_intent(payment_data: PaymentIntentRequest):
 from pydantic import BaseModel
     
 class CreatePaymentSessionRequest(BaseModel):
-    amount: int  # Amount in cents
-    currency: str  # Currency code (e.g., "usd")
-    success_url: str  # URL to redirect after successful payment
-    cancel_url: str  # URL to redirect after canceled payment
+    amount: int = 5000  # Amount in cents
+    currency: str = "usd" # Currency code (e.g., "usd")
+    success_url: str = "https://www.google.com/" # URL to redirect after successful payment
+    cancel_url: str  = "https://www.google.com/" # URL to redirect after canceled payment
 
 @app.post("/create-payment-session")
 async def create_payment_session(request: CreatePaymentSessionRequest):
