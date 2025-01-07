@@ -54,12 +54,18 @@ async def chat_endpoint(message: conversationCreate):
 # Stripe configuration
 stripe.api_key = "sk_test_51PTVnz04D1fiiyEWi8oObpVPpEflWz5sOlUreTqQJkfcuNc4j3tcxGVjOYOzt8cWoHrUtvdGOGifZt7JYhpYNRHZ00VSXaa4nB"
 
+from pydantic import BaseModel
+
+class PaymentIntentRequest(BaseModel):
+    amount: int
+    currency: str = "usd"
+
 @app.post("/create-payment-intent")
-async def create_payment_intent(amount: int, currency: str = "usd"):
+async def create_payment_intent(payment_data: PaymentIntentRequest):
     try:
         intent = stripe.PaymentIntent.create(
-            amount=amount,
-            currency=currency,
+            amount=payment_data.amount,
+            currency=payment_data.currency,
         )
         return {"client_secret": intent.client_secret}
     except Exception as e:
