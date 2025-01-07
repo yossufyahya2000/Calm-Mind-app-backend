@@ -73,6 +73,8 @@ async def create_payment_intent(payment_data: PaymentIntentRequest):
     
 
 from pydantic import BaseModel
+from fastapi.responses import JSONResponse
+
     
 class CreatePaymentSessionRequest(BaseModel):
     amount: int = 5000  # Amount in cents
@@ -102,10 +104,10 @@ async def create_payment_session(request: CreatePaymentSessionRequest):
             success_url=request.success_url,
             cancel_url=request.cancel_url,
         )
-        return {"session_id": session.id, "url": session.url}
+        return JSONResponse(content={"session_id": session.id, "url": session.url})
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
+#
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
     
