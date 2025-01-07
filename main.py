@@ -74,28 +74,37 @@ async def create_payment_intent(payment_data: PaymentIntentRequest):
 
 from pydantic import BaseModel
     
-class CreateCheckoutSessionRequest(BaseModel):
-    amount : int
-    success_url: str = "https://www.google.com/"
-    cancel_url: str = "https://www.google.com/"
+class CreatePaymentSessionRequest(BaseModel):
+    amount: int  # Amount in cents
+    currency: str  # Currency code (e.g., "usd")
+    success_url: str  # URL to redirect after successful payment
+    cancel_url: str  # URL to redirect after canceled payment
 
-@app.post("/create-checkout-session")
-async def create_checkout_session(session_data: CreateCheckoutSessionRequest):
+@app.post("/create-payment-session")
+async def create_payment_session(request: CreatePaymentSessionRequest):
     try:
-        checkout_session = stripe.checkout.Session.create(
-            line_items=[{
-                'price': session_data.amount,
-                'quantity': 1,
-            }],
-            mode='payment',
-            success_url="https://www.google.com/",
-            cancel_url="https://www.google.com/",
+        # Create a Stripe Checkout Session
+        session = stripe.checkout.Session.create(
+            payment_method_types=["card"],
+            line_items=[
+                {
+                    "price_data": {
+                        "currency": request.currency,
+                        "product_data": {
+                            "name": "Sample Product",  # Replace with your product name
+                        },
+                        "unit_amount": request.amount,  # Amount in cents
+                    },
+                    "quantity": 1,
+                }
+            ],
+            mode="payment",
+            success_url=request.success_url,
+            cancel_url=request.cancel_url,
         )
-        return {"url": checkout_session.url}
+        return {"session_id": session.id, "url": session.url}
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
-
-
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
