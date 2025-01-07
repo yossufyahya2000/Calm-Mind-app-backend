@@ -76,8 +76,8 @@ from pydantic import BaseModel
     
 class CreateCheckoutSessionRequest(BaseModel):
     amount : 50
-    success_url: str 
-    cancel_url: str
+    success_url: str = "https://www.google.com/"
+    cancel_url: str = "https://www.google.com/"
 
 @app.post("/create-checkout-session")
 async def create_checkout_session(session_data: CreateCheckoutSessionRequest):
