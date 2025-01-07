@@ -102,7 +102,6 @@ async def create_payment_session(request: CreatePaymentSessionRequest):
             ],
             mode="payment",
             success_url=request.success_url,
-            cancel_url=request.cancel_url,
         )
         return JSONResponse(content={"session_id": session.id, "url": session.url})
     except Exception as e:
