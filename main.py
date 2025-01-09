@@ -93,9 +93,9 @@ async def create_payment_session(request: CreatePaymentSessionRequest):
                     "price_data": {
                         "currency": request.currency,
                         "product_data": {
-                            "name": "Sample Product",  # Replace with your product name
+                            "name": "CalmMind Pro",  
                         },
-                        "unit_amount": request.amount,  # Amount in cents
+                        "unit_amount": request.amount,  
                     },
                     "quantity": 1,
                 }
