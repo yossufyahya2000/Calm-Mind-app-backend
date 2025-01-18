@@ -8,6 +8,7 @@ import logging
 import stripe
 from app.chat.chat import ChatService
 from app.chat.message import conversationCreate,MessageCreate
+import os
 
 
 load_dotenv()
@@ -52,7 +53,7 @@ async def chat_endpoint(message: conversationCreate):
     return StreamingResponse(generate(), media_type="text/event-stream")
 
 # Stripe configuration
-stripe.api_key = "sk_test_51PTVnz04D1fiiyEWi8oObpVPpEflWz5sOlUreTqQJkfcuNc4j3tcxGVjOYOzt8cWoHrUtvdGOGifZt7JYhpYNRHZ00VSXaa4nB"
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 from pydantic import BaseModel
 

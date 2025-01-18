@@ -7,7 +7,7 @@ from app.setup.geminiClient import geminiClient
 import logging
 
 logger = logging.getLogger(__name__)
-
+# ChatService class
 class ChatService:
     def __init__(self):
         self.supabase = supabaseClient()
