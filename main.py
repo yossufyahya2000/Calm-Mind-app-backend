@@ -72,7 +72,6 @@ async def create_payment_intent(payment_data: PaymentIntentRequest):
         raise HTTPException(status_code=400, detail=str(e))
     
 
-from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 
     
