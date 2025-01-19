@@ -2,11 +2,17 @@ version: 1.0
 runtime: python3
 build:
   commands:
-    - python -m pip install --upgrade pip
-    - pip install -r requirements.txt
-    - pip install fastapi
+    pre-build:
+      - pip install --upgrade pip
+    build:
+      - pip install -r requirements.txt
 run:
   runtime-version: 3.11
-  command: python main.py
+  command: uvicorn main:app --host 0.0.0.0 --port 8080
   network:
     port: 8080
+  env:
+    - name: MODULE_NAME
+      value: main
+    - name: VARIABLE_NAME
+      value: app
