@@ -1,6 +1,8 @@
 from datetime import datetime
 from uuid import UUID
 from pydantic import BaseModel
+from typing import Union
+
 
 class MessageBase(BaseModel):
     role: str = "user"
@@ -11,7 +13,8 @@ class MessageCreate(MessageBase):
     
 class conversationCreate(MessageBase):
     profile_id: UUID  
-    conversation_id: UUID | None = None 
+    conversation_id: Union[UUID, None] = None
+
     
 class Message(MessageBase):
     id: UUID
