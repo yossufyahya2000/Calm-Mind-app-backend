@@ -48,6 +48,7 @@ Start the bot by running the application. The bot will be accessible via:
 - **FastAPI**: Web framework for building APIs
 - **Supabase**: Backend-as-a-service for database and authentication
 - **Gemini**: AI model for conversational capabilities
+- **Stripe**: Payment processing
 - **AWS**: Deployment platform
 
 

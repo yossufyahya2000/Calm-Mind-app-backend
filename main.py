@@ -106,7 +106,7 @@ async def create_payment_session(request: CreatePaymentSessionRequest):
         return JSONResponse(content={"session_id": session.id, "url": session.url})
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-#
+
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
     
