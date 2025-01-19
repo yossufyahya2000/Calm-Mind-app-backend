@@ -1,19 +1,19 @@
 version: 1.0
-runtime: python311
+runtime: python3
 
 build:
   commands:
-    pre-build:
-      - pip3 install --upgrade pip
     build:
-      - pip3 install -r requirements.txt
+      - pip install --upgrade pip
+      - pip install fastapi
+      - pip install uvicorn
+      - pip install google-generativeai
+      - pip install mangum
+      - pip install supabase
+      - pip install python-dotenv
+      - pip install pydantic
+      - pip install stripe
+      - pip install gunicorn
+
 run:
-  runtime-version: 3.11
   command: python main.py
-  network:
-    port: 8080
-  env:
-    - name: MODULE_NAME
-      value: main
-    - name: VARIABLE_NAME
-      value: app
