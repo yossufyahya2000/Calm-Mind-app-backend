@@ -1,8 +1,10 @@
 fastapi==0.115.6
-uvicorn==0.34.0
+uvicorn==0.21.0
 google-generativeai==0.8.3
 mangum
 supabase==2.11.0
 python-dotenv
 pydantic
 stripe==11.4.1
+gunicorn==23.0.0
+
