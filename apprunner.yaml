@@ -1,7 +1,5 @@
 version: 1.0
 runtime: python3
-run:
-  runtime-version: 3.11
 build:
   commands:
     build:
@@ -15,6 +13,9 @@ build:
       - pip install pydantic
       - pip install stripe
       - pip install gunicorn
+      - pip install urllib3==1.26.15
+
+
 
 run:
   command: python main.py
